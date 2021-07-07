@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.spring.controller;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.model.Evento;
-import com.example.repository.EventoRepository;
+import com.example.spring.model.Evento;
+import com.example.spring.repository.EventoRepository;
 
 /**
  * @Project LucaTicketEventoService

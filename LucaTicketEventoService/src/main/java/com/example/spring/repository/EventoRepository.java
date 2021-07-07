@@ -1,8 +1,8 @@
-package com.example.repository;
+package com.example.spring.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.model.Evento;
+import com.example.spring.model.Evento;
 
 /**
  * @Project LucaTicketEventoService
