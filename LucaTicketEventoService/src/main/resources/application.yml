@@ -14,7 +14,7 @@ eureka:
 # HTTP Server (Tomcat) Port
 # Puerto de escucha. Es necesario pq todos los procesos a ejecutar que usan Tomcat no pueden usar a la vez el 8080
 server: 
-  port: 2222
+  port: 3333
 # Disable Spring Boot's "Whitelabel" default error page, so we can use our own  
   error:
     whitelabel:
