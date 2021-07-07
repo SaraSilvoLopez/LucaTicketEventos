@@ -18,4 +18,4 @@ server:
 # Disable Spring Boot's "Whitelabel" default error page, so we can use our own  
   error:
     whitelabel:
-      enabled: false 
+      enabled: false
