@@ -4,10 +4,8 @@ import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
 
 /**
  * @Project LucaTicketEventoService
@@ -23,9 +21,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
 public class Recinto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
