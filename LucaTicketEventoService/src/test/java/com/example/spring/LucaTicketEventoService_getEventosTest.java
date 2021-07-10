@@ -17,6 +17,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.example.spring.controller.EventoController;
 import com.example.spring.repository.EventoRepository;
 
+/**
+ * @Project LucaTicketEventoService
+ *
+ * @ClassName LucaTicketEventoService_getEventosTest
+ *
+ * @author María Castro, Patricia García, Usoa Larrarte,
+ * Jennifer Pérez y Sara Silvo
+ *
+ * @date 10 jul. 2021
+ * 
+ * @version 1.0
+ */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class LucaTicketEventoService_getEventosTest {

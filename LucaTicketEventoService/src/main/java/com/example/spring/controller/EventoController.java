@@ -33,7 +33,7 @@ import com.example.spring.repository.EventoRepository;
 @RestController
 public class EventoController {
 
-	private static final Logger logger = Logger.getLogger("");
+	private static final Logger logger = Logger.getLogger("EventoController.class");
 
 	@Autowired
 	private EventoRepository eventoRepository;
@@ -42,12 +42,19 @@ public class EventoController {
 	 * Método para añadir evento
 	 * 
 	 * @param evento
-	 * @return Evento
+	 * @return ResponseEntity
 	 */
 	@PostMapping("/eventos/add")
-	public Evento addEvento(@RequestBody Evento evento) {
+	public ResponseEntity<?> addEvento(@RequestBody Evento evento) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/ADD");
-		return eventoRepository.save(evento);
+		try {
+			Evento eventoCreado = eventoRepository.save(evento);
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+					.buildAndExpand(eventoCreado.getId()).toUri();
+			return ResponseEntity.created(location).build();
+		}catch(Exception e){
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+		}
 	}
 
 	/**
@@ -60,6 +67,18 @@ public class EventoController {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOS");
 		return eventoRepository.findAll();
 	}
+	
+	/**
+	 * Método para buscar un evento por id
+	 * 
+	 * @param id
+	 * @return Evento
+	 */
+	@GetMapping("/eventos/{id}")
+	public Evento getEvento(@PathVariable String id) {
+		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTO");
+		return eventoRepository.findById(id).orElseThrow(EventoNotFoundException::new);
+	}
 
 	/**
 	 * Método para eliminar evento por id. Si no lo encuentra o hay una excepcion
@@ -69,7 +88,7 @@ public class EventoController {
 	 * @return ResponseEntity<?>
 	 */
 	@DeleteMapping("/eventos/delete/{id}")
-	public ResponseEntity<?> deleteEvento(@PathVariable String id) {
+	public ResponseEntity<?> deleteEvento(@PathVariable("id") String id) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/DELETE/{id}");
 		try {
 			if (eventoRepository.findById(id).isPresent()) {
@@ -103,7 +122,31 @@ public class EventoController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
 	}
+	
+	/**
+	 * Método para listar todos los eventos de un generoMusical
+	 * 
+	 * @return List<Evento>
+	 */
+	@GetMapping("/eventos/bygeneromusical/{generoMusical}")
+	public List<Evento> getEventosByGeneroMusical(@PathVariable String generoMusical) {
+		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYGENEROMUSICAL");
+		return eventoRepository.findByGeneroMusical(generoMusical);
+	}
+	
+	/**
+	 * Método para listar todos los eventos que contengan el nombre indicado
+	 * 
+	 * @return List<Evento>
+	 */
+	@GetMapping("/eventos/bynombre/{nombreContains}")
+	public List<Evento> getEventosByNombre(@PathVariable String nombreContains) {
+		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYNOMBRE");
+		return eventoRepository.findByNombreContaining(nombreContains);
+	}
+	
+	
 }
