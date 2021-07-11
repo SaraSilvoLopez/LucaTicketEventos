@@ -22,9 +22,9 @@ public class EventoNotFoundException extends RuntimeException {
 	public EventoNotFoundException() {
 		super("No existe el evento");
 	}
-	
+
 	public EventoNotFoundException(String id) {
 		super("No existe el evento" + id);
-	} 
-	
+	}
+
 }

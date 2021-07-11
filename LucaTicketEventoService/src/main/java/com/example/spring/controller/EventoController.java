@@ -52,7 +52,7 @@ public class EventoController {
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(eventoCreado.getId()).toUri();
 			return ResponseEntity.created(location).build();
-		}catch(Exception e){
+		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
 	}
@@ -67,7 +67,7 @@ public class EventoController {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOS");
 		return eventoRepository.findAll();
 	}
-	
+
 	/**
 	 * Método para buscar un evento por id
 	 * 
@@ -107,7 +107,7 @@ public class EventoController {
 	 * devuelte estado NOT FOUND
 	 * 
 	 * @param evento
-	 * @return
+	 * @return ResponseEntity<?>
 	 */
 	@PutMapping("/eventos/update")
 	public ResponseEntity<?> updateEvento(@RequestBody Evento evento) {
@@ -125,10 +125,11 @@ public class EventoController {
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 		}
 	}
-	
+
 	/**
 	 * Método para listar todos los eventos de un generoMusical
 	 * 
+	 * @param generoMusical
 	 * @return List<Evento>
 	 */
 	@GetMapping("/eventos/bygeneromusical/{generoMusical}")
@@ -136,10 +137,11 @@ public class EventoController {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYGENEROMUSICAL");
 		return eventoRepository.findByGeneroMusical(generoMusical);
 	}
-	
+
 	/**
 	 * Método para listar todos los eventos que contengan el nombre indicado
 	 * 
+	 * @param nombreContains
 	 * @return List<Evento>
 	 */
 	@GetMapping("/eventos/bynombre/{nombreContains}")
@@ -147,6 +149,5 @@ public class EventoController {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYNOMBRE");
 		return eventoRepository.findByNombreContaining(nombreContains);
 	}
-	
-	
+
 }
