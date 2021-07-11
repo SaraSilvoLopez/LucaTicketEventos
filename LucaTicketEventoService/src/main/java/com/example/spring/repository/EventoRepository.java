@@ -18,8 +18,9 @@ import com.example.spring.model.Evento;
  * @version 1.0
  */
 public interface EventoRepository extends MongoRepository<Evento, String> {
-	
+
 	List<Evento> findByGeneroMusical(String generoMusical);
+
 	List<Evento> findByNombreContaining(String nombreContains);
 
 }
