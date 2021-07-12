@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.spring.excepciones.FormatoException;
+import com.example.spring.excepciones.VacioException;
 import com.example.spring.model.Evento;
 import com.example.spring.repository.EventoRepository;
 
@@ -47,15 +50,27 @@ public class EventoController {
 	@PostMapping("/eventos/add")
 	public ResponseEntity<?> addEvento(@RequestBody Evento evento) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/ADD");
-		try {
-			Evento eventoCreado = eventoRepository.save(evento);
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-					.buildAndExpand(eventoCreado.getId()).toUri();
-			return ResponseEntity.created(location).build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+		if (evento.getNombre() != null 
+				&& evento.getGeneroMusical() != null 
+				&& evento.getFecha()!= null
+				&& evento.getRecinto()!= null) {
+						try {
+							Evento eventoCreado = eventoRepository.save(evento);
+							URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+							.buildAndExpand(eventoCreado.getId()).toUri();
+							return ResponseEntity.created(location).build();
+					} catch (DataIntegrityViolationException ex) { 
+						throw new FormatoException();						
+					}
+		} else {
+			throw new VacioException();
 		}
 	}
+
+	
+	
+	
+	
 
 	/**
 	 * Método para listar todos los eventos de la BBDDs
