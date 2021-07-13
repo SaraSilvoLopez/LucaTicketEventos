@@ -12,31 +12,31 @@ import static io.restassured.RestAssured.given;
 /**
  * @Project LucaTicketEventoService
  *
- * @ClassName TestGetEventosByGeneroMusical
+ * @ClassName TestGetEventosByCiudad
  *
  * @author María Castro, Patricia García, Usoa Larrarte,
  * Jennifer Pérez y Sara Silvo
  *
- * @date 10 jul. 2021
+ * @date 11 jul. 2021
  * 
  * @version 1.0
  */
 @SpringBootConfiguration
-public class TestGetEventosByGeneroMusical {
+public class TestGetEventosByCiudad {
 	
-	private static final Logger logger = Logger.getLogger("TestGetEventosByGeneroMusical.class");
+	private static final Logger logger = Logger.getLogger("TestGetEventosByCiudad.class");
 
 	@Test
-	public void getEventosByGeneroMusicalTest() {
+	public void getEventosByCiudadTest() {
 		
-		logger.info("---- Se ha invocado el TestGetEventosByGeneroMusical");
+		logger.info("---- Se ha invocado el TestGetEventosByCiudad");
 		
 		given().log().all()
 			.port(3333)
-			.get("/eventos/bygeneromusical/Pop-Rock")
+			.get("/eventos/byciudad/Sevilla")
 		.then().log().all()
 			.statusCode(200)
-			.body("generoMusical", hasItems("Pop-Rock"));
+			.body("recinto.ciudad", hasItems("Sevilla"));
 	}
 	
 }

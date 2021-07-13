@@ -1,12 +1,14 @@
 package com.example.spring.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.ws.rs.Consumes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.spring.excepciones.NotFoundException;
 import com.example.spring.excepciones.FormatoException;
 import com.example.spring.excepciones.VacioException;
 import com.example.spring.model.Evento;
@@ -45,33 +47,27 @@ public class EventoController {
 	 * Método para añadir evento
 	 * 
 	 * @param evento
-	 * @return ResponseEntity
+	 * @return ResponseEntity<String>
 	 */
 	@PostMapping("/eventos/add")
-	public ResponseEntity<?> addEvento(@RequestBody Evento evento) {
+    @Consumes({MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> addEvento(@RequestBody Evento evento) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/ADD");
 		if (evento.getNombre() != null 
-				&& evento.getGeneroMusical() != null 
-				&& evento.getFecha()!= null
-				&& evento.getRecinto()!= null) {
-						try {
-							Evento eventoCreado = eventoRepository.save(evento);
-							URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-							.buildAndExpand(eventoCreado.getId()).toUri();
-							return ResponseEntity.created(location).build();
-					} catch (DataIntegrityViolationException ex) { 
-						throw new FormatoException();						
-					}
+			&& evento.getGeneroMusical() != null 
+			&& evento.getRecinto().getCiudad() != null) {
+				try {
+					Evento eventoCreado = eventoRepository.save(evento);
+					return new ResponseEntity<>("El evento se ha guardado correctamente \n" + eventoCreado.toString()
+					,HttpStatus.CREATED);
+				} catch (DataIntegrityViolationException ex) { 
+					throw new FormatoException();						
+				}
 		} else {
 			throw new VacioException();
 		}
 	}
-
 	
-	
-	
-	
-
 	/**
 	 * Método para listar todos los eventos de la BBDDs
 	 * 
@@ -92,7 +88,7 @@ public class EventoController {
 	@GetMapping("/eventos/{id}")
 	public Evento getEvento(@PathVariable String id) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTO");
-		return eventoRepository.findById(id).orElseThrow(EventoNotFoundException::new);
+		return eventoRepository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	/**
@@ -103,17 +99,17 @@ public class EventoController {
 	 * @return ResponseEntity<?>
 	 */
 	@DeleteMapping("/eventos/delete/{id}")
-	public ResponseEntity<?> deleteEvento(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteEvento(@PathVariable("id") String id) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/DELETE/{id}");
 		try {
 			if (eventoRepository.findById(id).isPresent()) {
 				eventoRepository.deleteById(id);
-				return ResponseEntity.ok().build();
+				return new ResponseEntity<>("El evento se ha eliminado correctamente \n", HttpStatus.OK);
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+				throw new NotFoundException();
 			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (DataIntegrityViolationException e) {
+			throw new NotFoundException();
 		}
 	}
 
@@ -125,19 +121,18 @@ public class EventoController {
 	 * @return ResponseEntity<?>
 	 */
 	@PutMapping("/eventos/update")
-	public ResponseEntity<?> updateEvento(@RequestBody Evento evento) {
+	public ResponseEntity<String> updateEvento(@RequestBody Evento evento) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/UPDATE");
 		try {
 			if (eventoRepository.findById(evento.getId()).isPresent()) {
 				Evento eventoModificado = eventoRepository.save(evento);
-				URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-						.buildAndExpand(eventoModificado.getId()).toUri();
-				return ResponseEntity.created(location).build();
+				return new ResponseEntity<>("El evento se ha modificado correctamente \n" + eventoModificado.toString()
+				,HttpStatus.OK);
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+				throw new NotFoundException();
 			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+		} catch (DataIntegrityViolationException e) {
+			throw new NotFoundException();
 		}
 	}
 
@@ -163,6 +158,18 @@ public class EventoController {
 	public List<Evento> getEventosByNombre(@PathVariable String nombreContains) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYNOMBRE");
 		return eventoRepository.findByNombreContaining(nombreContains);
+	}
+	
+	/**
+	 * Método para listar todos los eventos de una ciudad
+	 * 
+	 * @param ciudad
+	 * @return List<Evento>
+	 */
+	@GetMapping("/eventos/byciudad/{ciudad}")
+	public List<Evento> getEventosByCiudad(@PathVariable String ciudad) {
+		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYCIUDAD");
+		return eventoRepository.findByRecintoCiudad(ciudad);
 	}
 
 }

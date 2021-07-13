@@ -12,9 +12,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * @Project LucaTicketUsuarioService
+ * @Project LucaTicketEventoService
  *
- * @ClassName LucaTicketUsuarioServiceApplication
+ * @ClassName ApiErrorAttributes
  *
  * @author Jennifer Pérez y Sara Silvo
  *
@@ -23,11 +23,9 @@ import org.springframework.web.server.ResponseStatusException;
  * @version 1.0
  */
 
-
-
 /**
  * Crea la clase ApiErrorAttributes extendida de DefaultErrorAttributes de la que herdara los atributos
- * timestamp -la hora a la que se extrajeron los errores
+ * timestamp - la hora a la que se extrajeron los errores
  * status - el código de estado
  * error - el motivo del error
  * message - el mensaje del error (cuando se configura)
@@ -38,10 +36,12 @@ public class ApiErrorAttributes extends DefaultErrorAttributes {
 
     
     public Map<String, Object> getErrorAttributes(WebRequest webRequest) {
+    	
         Map<String, Object> allErrorAttributes = super.getErrorAttributes(webRequest, null);
-
         Map<String, Object> errorAttributes = new HashMap<>();
-        int statusCode = (int) allErrorAttributes.get("status");
+        
+        int statusCode = (int) allErrorAttributes.get("status"); 
+        
         errorAttributes.put("estado", HttpStatus.valueOf(statusCode));
         errorAttributes.put("fecha", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
