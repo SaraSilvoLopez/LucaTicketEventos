@@ -1,4 +1,4 @@
-package com.example.spring.controller;
+package com.example.spring.excepciones;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class EventoNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public EventoNotFoundException() {
+	/**
+	 *Personalizan el mensaje de error cuando el evento no existe
+	 */
+	public NotFoundException() {
 		super("No existe el evento");
 	}
 
-	public EventoNotFoundException(String id) {
+	public NotFoundException(String id) {
 		super("No existe el evento" + id);
 	}
 

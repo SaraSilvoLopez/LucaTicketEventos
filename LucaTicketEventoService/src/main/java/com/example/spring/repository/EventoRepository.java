@@ -22,5 +22,7 @@ public interface EventoRepository extends MongoRepository<Evento, String> {
 	List<Evento> findByGeneroMusical(String generoMusical);
 
 	List<Evento> findByNombreContaining(String nombreContains);
+	
+	List<Evento> findByRecintoCiudad(String ciudad);
 
 }

@@ -1,6 +1,5 @@
 package com.example.spring.error;
 
-
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
@@ -15,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
- * * @Project LucaTicketUsuarioService
+ * * @Project LucaTicketEventoService
  *
- * @ClassName UsuarioController
+ * @ClassName ApiError
  *
  * @author Jennifer Pérez y Sara Silvo
  *
@@ -25,7 +24,6 @@ import lombok.Setter;
  * 
  * @version 1.0
  */
-
 
 /**
  * Crea la clase ApiError

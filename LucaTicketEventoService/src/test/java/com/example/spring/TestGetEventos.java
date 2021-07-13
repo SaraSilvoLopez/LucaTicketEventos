@@ -2,6 +2,8 @@ package com.example.spring;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 
+import java.util.logging.Logger;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootConfiguration;
 
@@ -22,8 +24,13 @@ import static io.restassured.RestAssured.given;
 @SpringBootConfiguration
 public class TestGetEventos {
 
+	private static final Logger logger = Logger.getLogger("TestGetEventos.class");
+	
 	@Test
 	public void getEventosTest() {
+		
+		logger.info("---- Se ha invocado el TestGetEventos");
+		
 		given().log().all()
 			.port(3333)
 			.get("/eventos")
