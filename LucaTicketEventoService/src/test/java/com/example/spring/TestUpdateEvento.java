@@ -30,12 +30,12 @@ public class TestUpdateEvento {
 		logger.info("---- Se ha invocado el TestUpdateEvento");
 		
 		 given().log().all()
-				.port(3333)
-				.header("Content-type", "application/json")
-				.and()
-				.body("{\"id\":\"60edc98ca5997f3f9d0e553a\", \"nombre\":\"Viña Rock\",\"generoMusical\":\"Rock\", \"recinto\":{\"ciudad\":\"Sevilla\"}}")
+			.port(3333)
+			.header("Content-type", "application/json")
+			.and()
+			.body("{\"id\":\"60edc98ca5997f3f9d0e553a\", \"nombre\":\"Viña Rock\",\"generoMusical\":\"Rock\", \"recinto\":{\"ciudad\":\"Sevilla\"}}")
 		.when()
-				.post("/eventos/add");
+			.post("/eventos/add");
 		
 		 given().log().all()
 			.port(3333)
