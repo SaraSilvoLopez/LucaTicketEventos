@@ -50,24 +50,23 @@ public class EventoController {
 	 * @return ResponseEntity<String>
 	 */
 	@PostMapping("/eventos/add")
-    @Consumes({MediaType.APPLICATION_JSON_VALUE})
+	@Consumes({ MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<String> addEvento(@RequestBody Evento evento) {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/ADD");
-		if (evento.getNombre() != null 
-			&& evento.getGeneroMusical() != null 
-			&& evento.getRecinto().getCiudad() != null) {
-				try {
-					Evento eventoCreado = eventoRepository.save(evento);
-					return new ResponseEntity<>("El evento se ha guardado correctamente \n" + eventoCreado.toString()
-					,HttpStatus.CREATED);
-				} catch (DataIntegrityViolationException ex) { 
-					throw new FormatoException();						
-				}
+		if (evento.getNombre() != null && evento.getGeneroMusical() != null
+				&& evento.getRecinto().getCiudad() != null) {
+			try {
+				Evento eventoCreado = eventoRepository.save(evento);
+				return new ResponseEntity<>("El evento se ha guardado correctamente \n" + eventoCreado.toString(),
+						HttpStatus.CREATED);
+			} catch (DataIntegrityViolationException ex) {
+				throw new FormatoException();
+			}
 		} else {
 			throw new VacioException();
 		}
 	}
-	
+
 	/**
 	 * Método para listar todos los eventos de la BBDDs
 	 * 
@@ -126,8 +125,8 @@ public class EventoController {
 		try {
 			if (eventoRepository.findById(evento.getId()).isPresent()) {
 				Evento eventoModificado = eventoRepository.save(evento);
-				return new ResponseEntity<>("El evento se ha modificado correctamente \n" + eventoModificado.toString()
-				,HttpStatus.OK);
+				return new ResponseEntity<>("El evento se ha modificado correctamente \n" + eventoModificado.toString(),
+						HttpStatus.OK);
 			} else {
 				throw new NotFoundException();
 			}
@@ -159,7 +158,7 @@ public class EventoController {
 		logger.info("---- Se ha invocado el microservicio EVENTOS/GETEVENTOSBYNOMBRE");
 		return eventoRepository.findByNombreContaining(nombreContains);
 	}
-	
+
 	/**
 	 * Método para listar todos los eventos de una ciudad
 	 * 

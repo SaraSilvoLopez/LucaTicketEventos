@@ -20,7 +20,7 @@ public class NotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *Personalizan el mensaje de error cuando el evento no existe
+	 * Personalizan el mensaje de error cuando el evento no existe
 	 */
 	public NotFoundException() {
 		super("No existe el evento");

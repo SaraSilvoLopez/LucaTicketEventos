@@ -24,44 +24,43 @@ import org.springframework.web.server.ResponseStatusException;
  */
 
 /**
- * Crea la clase ApiErrorAttributes extendida de DefaultErrorAttributes de la que herdara los atributos
- * timestamp - la hora a la que se extrajeron los errores
- * status - el código de estado
- * error - el motivo del error
- * message - el mensaje del error (cuando se configura)
+ * Crea la clase ApiErrorAttributes extendida de DefaultErrorAttributes de la
+ * que herdara los atributos timestamp - la hora a la que se extrajeron los
+ * errores status - el código de estado error - el motivo del error message - el
+ * mensaje del error (cuando se configura)
  * 
  */
 @Component
 public class ApiErrorAttributes extends DefaultErrorAttributes {
 
-    
-    public Map<String, Object> getErrorAttributes(WebRequest webRequest) {
-    	
-        Map<String, Object> allErrorAttributes = super.getErrorAttributes(webRequest, null);
-        Map<String, Object> errorAttributes = new HashMap<>();
-        
-        int statusCode = (int) allErrorAttributes.get("status"); 
-        
-        errorAttributes.put("estado", HttpStatus.valueOf(statusCode));
-        errorAttributes.put("fecha", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+	public Map<String, Object> getErrorAttributes(WebRequest webRequest) {
 
-        String mensaje = "";
+		Map<String, Object> allErrorAttributes = super.getErrorAttributes(webRequest, null);
+		Map<String, Object> errorAttributes = new HashMap<>();
 
-        Throwable throwable = getError(webRequest);
+		int statusCode = (int) allErrorAttributes.get("status");
 
-        if (throwable instanceof ResponseStatusException) {
-            ResponseStatusException responseStatusException = (ResponseStatusException) throwable;
-            mensaje = responseStatusException.getReason() == null ? "" : responseStatusException.getReason(); 
-        }else {
-            if (throwable.getCause() != null)
-                mensaje = throwable.getCause().getMessage() == null ? throwable.getCause().toString() : throwable.getCause().getMessage();
-            else
-                mensaje = throwable.toString();
-        }
+		errorAttributes.put("estado", HttpStatus.valueOf(statusCode));
+		errorAttributes.put("fecha", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
-        errorAttributes.put("mensaje", mensaje);
+		String mensaje = "";
 
-        return errorAttributes;
-    }
+		Throwable throwable = getError(webRequest);
+
+		if (throwable instanceof ResponseStatusException) {
+			ResponseStatusException responseStatusException = (ResponseStatusException) throwable;
+			mensaje = responseStatusException.getReason() == null ? "" : responseStatusException.getReason();
+		} else {
+			if (throwable.getCause() != null)
+				mensaje = throwable.getCause().getMessage() == null ? throwable.getCause().toString()
+						: throwable.getCause().getMessage();
+			else
+				mensaje = throwable.toString();
+		}
+
+		errorAttributes.put("mensaje", mensaje);
+
+		return errorAttributes;
+	}
 
 }
