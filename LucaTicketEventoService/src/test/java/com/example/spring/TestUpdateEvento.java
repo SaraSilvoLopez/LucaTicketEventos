@@ -25,7 +25,7 @@ public class TestUpdateEvento {
 	private static final Logger logger = Logger.getLogger("TestUpdateEvento.class");
 	
 	@Test
-	public void deleteEventoTest() {
+	public void updateEventoTest() {
 		
 		logger.info("---- Se ha invocado el TestUpdateEvento");
 		

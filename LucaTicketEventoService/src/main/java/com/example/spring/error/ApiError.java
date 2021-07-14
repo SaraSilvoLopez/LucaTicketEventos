@@ -26,8 +26,8 @@ import lombok.Setter;
  */
 
 /**
- * Crea la clase ApiError
- * Utiliza Lombok para crear los metodos get, set y los constructores vacio y con argumentos 
+ * Crea la clase ApiError Utiliza Lombok para crear los metodos get, set y los
+ * constructores vacio y con argumentos
  *
  */
 @Setter
@@ -42,5 +42,5 @@ public class ApiError {
 	private LocalDateTime fecha = LocalDateTime.now();
 	@NonNull
 	private String mensaje;
-	
+
 }
